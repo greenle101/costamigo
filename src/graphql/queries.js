@@ -16,3 +16,35 @@ export const GET_POSTS = gql`
     }
   }
 `;
+
+
+export const GET_META_TAGS = gql`
+  query MetaTags {
+    page(id: "/", idType: URI) {
+      title
+      seo {
+        title
+        metaDesc
+        canonical
+        opengraphTitle
+        opengraphDescription
+        opengraphImage {
+          sourceUrl
+        }
+        twitterTitle
+        twitterDescription
+      }
+    }
+  }
+`;
+
+export const GET_FOOTER_INFO = gql`
+  query FooterInfo {
+    footerOptions {
+      footer {
+        facebook
+        view360
+      }
+    }
+  }
+`;
