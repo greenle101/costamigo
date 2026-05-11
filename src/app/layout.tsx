@@ -40,8 +40,6 @@ export async function generateMetadata(): Promise<Metadata> {
       query: GET_META_TAGS,
     });
 
-    console.log(data, "meta tags===");
-
     const page = data?.page;
     const seo = page?.seo;
 
