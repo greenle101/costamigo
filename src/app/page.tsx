@@ -64,14 +64,11 @@ export default async function Homepage() {
 
 function renderHomeData(items: InformationItem[], footerInfo: GetFooterInfoResponse) {
   return (
-    <div
-      className="relative flex min-h-screen w-full min-w-0 flex-col items-center overflow-x-hidden bg-[#ebe6df] bg-cover bg-center bg-no-repeat px-3 sm:px-4 md:px-6"
-      style={{ backgroundImage: "url('/img/top/information_bg_01.jpg')" }}
-    >
-      <div className="flex min-h-0 w-full flex-1 flex-col items-center justify-center">
+    <section className="section-top-information costamigo-page d-flex flex-column flex-grow-1">
+      <div className="wrapper w-100 mx-auto wrapper-inner-padding">
         <TopInformation items={items} />
+        <Footer footerInfo={footerInfo} />
       </div>
-      <Footer footerInfo={footerInfo} />
-    </div>
+    </section>
   );
 }

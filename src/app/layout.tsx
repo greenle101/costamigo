@@ -80,10 +80,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} h-100`}
     >
-      <body className="flex min-h-full min-w-0 flex-col overflow-x-hidden">
-        <ApolloWrapper>{children}</ApolloWrapper>
+      <body className="d-flex flex-column min-vh-100 overflow-x-hidden antialiased">
+        <ApolloWrapper>
+          <div className="d-flex flex-column flex-grow-1 min-vh-100 w-100">{children}</div>
+        </ApolloWrapper>
       </body>
     </html>
   );

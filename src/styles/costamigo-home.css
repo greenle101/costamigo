@@ -1,0 +1,275 @@
+/**
+ * Page shell — reference layout uses vw-scaled root `rem`; keep structural spacing predictable.
+ */
+.costamigo-page {
+  width: 100%;
+  max-width: 100%;
+  /* `clip` was cutting off the folder grid; reference html has no horizontal page clip here */
+  overflow-x: visible;
+  box-sizing: border-box;
+}
+
+.costamigo-page *,
+.costamigo-page *::before,
+.costamigo-page *::after {
+  box-sizing: border-box;
+}
+
+.costamigo-page > .wrapper {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* After switching `.wrapper` to `justify-content: flex-start` (top.css), keep the footer at the bottom on tall viewports. */
+.section-top-information .wrapper > footer {
+  margin-top: auto;
+}
+
+.costamigo-page footer {
+  flex-shrink: 0;
+}
+
+/**
+ * Lateral inset uses vw-scaled `rem` only (same unit system as `top.css` tiles). Pair changes with
+ * `.slider-top-information .swiper` margin on SP so the swiper track width stays constant and labels don’t clip.
+ */
+.wrapper-inner-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+@media only screen and (max-width: 767.98px) {
+  .wrapper-inner-padding {
+    padding-left: 0.1rem;
+    padding-right: 0.1rem;
+  }
+}
+
+.image-common {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Footer icons — matches `html/index.html` (`object-common`) */
+.object-common {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/**
+ * Swiper layout — MUST NOT set `width: 100%` on `.swiper` here: `top.css` uses `margin: 0 1.82rem`
+ * so the track stays inset; forcing 100% width + horizontal margins overflows and shifts the grid right.
+ * Buttons are siblings of `.swiper`; absolutely positioned inside `.slider-top-information`.
+ */
+.slider-top-information {
+  width: 100%;
+  /* Swiper defaults use `--swiper-theme-color` (blue) for built-in chevrons; we use PNG/SVG backgrounds from top.css instead */
+  --swiper-theme-color: transparent;
+  --swiper-navigation-color: transparent;
+}
+
+.slider-top-information .swiper {
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+}
+
+.slider-top-information .swiper-wrapper {
+  display: flex;
+  box-sizing: content-box;
+}
+
+/* Match reference: plain slide; grid centers itself via `justify-content` on `.slide-grid` (top.css) */
+.slider-top-information .swiper-slide {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Sibling arrows: vertical center; horizontal inset matches top.css (beats Swiper theme offsets) */
+.slider-top-information > button.swiper-button-prev,
+.slider-top-information > button.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.slider-top-information > button.swiper-button-next {
+  transform: translateY(-50%);
+}
+
+.slider-top-information > button.swiper-button-prev {
+  transform: translateY(-50%) scaleX(-1);
+}
+
+@media print, (min-width: 768px) {
+  .slider-top-information > button.swiper-button-prev {
+    left: 0.4rem !important;
+    right: auto !important;
+  }
+
+  .slider-top-information > button.swiper-button-next {
+    right: 0.4rem !important;
+    left: auto !important;
+  }
+}
+
+@media only screen and (max-width: 767.98px) {
+  .slider-top-information > button.swiper-button-prev {
+    left: -0.05rem !important;
+    right: auto !important;
+  }
+
+  .slider-top-information > button.swiper-button-next {
+    right: -0.05rem !important;
+    left: auto !important;
+  }
+}
+
+/* Native `<button>` arrows — reset defaults so top.css / Swiper visuals apply */
+.slider-top-information button.swiper-button-prev,
+.slider-top-information button.swiper-button-next {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  color: transparent !important;
+  /* Bootstrap Reboot gives buttons a border; reads as a black/gray ring around our circular PNG */
+  border: none !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+.slider-top-information button.swiper-button-prev:focus,
+.slider-top-information button.swiper-button-next:focus,
+.slider-top-information button.swiper-button-prev:focus-visible,
+.slider-top-information button.swiper-button-next:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/**
+ * top.css applies filter: drop-shadow on nav buttons — outside the asset it can look like a dark halo / “black circle”.
+ * Reference arrow art already includes the white disk; drop-shadow is redundant here.
+ */
+.slider-top-information .swiper-button-prev,
+.slider-top-information .swiper-button-next {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+/* Remove Swiper-injected SVG chevrons (they use fill: currentColor → blue) */
+.slider-top-information .swiper-button-prev svg,
+.slider-top-information .swiper-button-next svg {
+  display: none !important;
+}
+
+.slider-top-information .swiper-button-prev .swiper-navigation-icon,
+.slider-top-information .swiper-button-next .swiper-navigation-icon {
+  display: none !important;
+}
+
+.slider-top-information .swiper-button-prev::after,
+.slider-top-information .swiper-button-next::after {
+  content: none !important;
+  display: none !important;
+}
+
+.slider-top-information button.swiper-button-prev:disabled,
+.slider-top-information button.swiper-button-next:disabled,
+.slider-top-information .swiper-button-prev.swiper-button-disabled,
+.slider-top-information .swiper-button-next.swiper-button-disabled {
+  opacity: 1;
+  background-image: url("/img/top/arrow_slider_02.svg");
+  cursor: not-allowed;
+}
+
+.slider-top-information .slide-item.trans:hover {
+  opacity: 0.7;
+}
+
+/* Title treatment from reference common.css */
+.title-common-primary {
+  display: inline-block;
+  /**
+   * Parent must not use a larger font-size than `.title-label`: the inline layout “strut”
+   * for each line box is derived from this element’s font metrics. If the h1 is 0.5rem
+   * but the span is 0.35rem, wrapped lines reserve the parent’s line-height and look
+   * vertically “blown apart”. Size / line-height live on `.title-label` only.
+   */
+  font-size: 0;
+  line-height: 0;
+  background: linear-gradient(97.36deg, #c76400 8.99%, #2b3580 51%, #0084ae 91.42%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-family: var(--font-playfair-display, "Playfair Display"), serif;
+  font-weight: 400;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-common-primary .title-label {
+  font-family: var(--font-playfair-display, "Playfair Display"), serif;
+  text-transform: uppercase;
+}
+
+@media print, (min-width: 768px) {
+  .title-common-primary {
+    margin-bottom: 0.15rem;
+  }
+
+  .title-common-primary .title-label {
+    margin-left: 0.62rem;
+    font-size: 0.5rem;
+    line-height: 1.2;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1100.98px) {
+  .title-common-primary .title-label {
+    font-size: 0.65rem;
+  }
+}
+
+@media only screen and (max-width: 767.98px) {
+  .title-common-primary {
+    margin-bottom: 0.15rem;
+  }
+
+  .title-common-primary .title-label {
+    margin-top: -0.07rem;
+    margin-left: 0.32rem;
+    font-size: 0.35rem;
+    line-height: 1.1428571429;
+  }
+}
+
+.section-top-information .title-common-primary .title-label {
+  margin-left: 0;
+}
+
+.section-top-information .information-heading h1.title-common-primary {
+  margin-top: 0;
+}
+
+.section-top-information .information-social > a.social-link {
+  text-decoration: none;
+}
+
+.section-top-information .information-social > a.social-link:hover {
+  color: #5a3520;
+}
+
+.opacity-hover {
+  transition: opacity 0.2s ease;
+}
+
+.opacity-hover:hover {
+  opacity: 0.7;
+}

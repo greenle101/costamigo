@@ -1,0 +1,60 @@
+/**
+ * Fluid root font-size (from reference common.css) so `rem` in top.css scales with viewport.
+ * Body base typography aligned with the static HTML site.
+ */
+html {
+  line-height: 1;
+}
+
+@media print, (min-width: 768px) {
+  html {
+    overflow: auto scroll;
+    font-size: 5.2083333333vw;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1100.98px) {
+  html {
+    font-size: 6.4935064935vw;
+  }
+}
+
+@media only screen and (max-width: 767.98px) {
+  html {
+    min-height: 100vh;
+    font-size: 22.7272727273vw;
+  }
+
+  html::-webkit-scrollbar {
+    width: 0;
+    opacity: 0;
+  }
+}
+
+body {
+  background-color: #ebe6df;
+  color: #555;
+  font-family: var(--font-playfair-display, "Playfair Display"), serif;
+  font-size: 0.16rem;
+  font-weight: 400;
+  line-height: 1.8;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+
+  /**
+   * Bootstrap spacing uses `rem`, which resolves against vw-scaled `html` here and becomes huge.
+   * Pin layout-related tokens to px so Bootstrap helpers stay usable next to reference `rem` rules.
+   */
+  --bs-gutter-x: 12px;
+  --bs-gutter-y: 12px;
+  --bs-border-radius: 4px;
+  --bs-border-radius-sm: 4px;
+  --bs-border-radius-lg: 8px;
+}
+
+body,
+html {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
