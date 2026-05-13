@@ -9,7 +9,7 @@ import {
 
 const GRAPHQL_ENDPOINT =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() ||
-  "https://costamigo.leaddigital.vn/graphql";
+  "https://dashboard.costamigo.vn/graphql";
 
 function makeClient() {
   return new ApolloClient({

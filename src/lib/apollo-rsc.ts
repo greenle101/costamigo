@@ -3,7 +3,7 @@ import { registerApolloClient } from "@apollo/client-integration-nextjs";
 
 const GRAPHQL_ENDPOINT =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() ||
-  "https://costamigo.leaddigital.vn/graphql";
+  "https://dashboard.costamigo.vn/graphql";
 
 /**
  * `GRAPHQL_RSC_FETCH_CACHE`: `no-store` | `force-cache` | `revalidate`
@@ -35,13 +35,21 @@ function graphqlRscFetchOptions(): RequestInit {
   return { cache: "no-store" };
 }
 
-export const { getClient } = registerApolloClient(
-  () =>
-    new ApolloClient({
-      cache: new InMemoryCache(),
-      link: new HttpLink({
-        uri: GRAPHQL_ENDPOINT,
-        fetchOptions: graphqlRscFetchOptions(),
-      }),
-    })
-);
+/** Sent only from this server bundle (never use `NEXT_PUBLIC_` for secrets). */
+function graphqlRscServerHeaders(): Record<string, string> {
+  const secret = process.env.GRAPHQL_SERVER_SECRET?.trim();
+  if (!secret) return {};
+  return { "X-GraphQL-Server-Secret": secret };
+}
+
+export const { getClient } = registerApolloClient(() => {
+  console.log("[Apollo RSC]", !!process.env.GRAPHQL_RSC_FETCH_CACHE);
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({
+      uri: GRAPHQL_ENDPOINT,
+      headers: graphqlRscServerHeaders(),
+      fetchOptions: graphqlRscFetchOptions(),
+    }),
+  });
+});
