@@ -34,12 +34,11 @@ export default function TopInformation({ items = [] }: TopInformationProps) {
   const rootId = `information-slider-${uid}`;
 
   const [mounted, setMounted] = useState(false);
-  /** SSR / first paint: assume desktop chunks so 4×2 grid matches reference [costamigo.leaddigital.vn/html](https://costamigo.leaddigital.vn/html/). */
-  const [isMdUp, setIsMdUp] = useState(() =>
-    typeof window === "undefined"
-      ? true
-      : window.matchMedia(`(min-width: ${MD_MIN_WIDTH_PX}px)`).matches,
-  );
+  /**
+   * Must match SSR: server has no `window`, so we assume desktop until `useEffect` syncs.
+   * Reading `matchMedia` in `useState` breaks hydration on mobile (server HTML uses desktop classes, client first paint used mobile).
+   */
+  const [isMdUp, setIsMdUp] = useState(true);
   const [spacePx, setSpacePx] = useState(12);
 
   useEffect(() => {
