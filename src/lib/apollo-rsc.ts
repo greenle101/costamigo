@@ -1,6 +1,8 @@
 import { HttpLink, ApolloClient, InMemoryCache } from "@apollo/client";
 import { registerApolloClient } from "@apollo/client-integration-nextjs";
 
+import { graphqlUserAgent } from "@/lib/graphql-user-agent";
+
 const GRAPHQL_ENDPOINT =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() ||
   "https://dashboard.costamigo.vn/graphql";
@@ -37,9 +39,12 @@ function graphqlRscFetchOptions(): RequestInit {
 
 /** Sent only from this server bundle (never use `NEXT_PUBLIC_` for secrets). */
 function graphqlRscServerHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    "User-Agent": graphqlUserAgent(),
+  };
   const secret = process.env.GRAPHQL_SERVER_SECRET?.trim();
-  if (!secret) return {};
-  return { "X-GraphQL-Server-Secret": secret };
+  if (secret) headers["X-GraphQL-Server-Secret"] = secret;
+  return headers;
 }
 
 export const { getClient } = registerApolloClient(() => {

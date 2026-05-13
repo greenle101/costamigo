@@ -7,6 +7,8 @@ import {
   InMemoryCache
 } from "@apollo/client-integration-nextjs";
 
+import { graphqlUserAgent } from "@/lib/graphql-user-agent";
+
 const GRAPHQL_ENDPOINT =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() ||
   "https://dashboard.costamigo.vn/graphql";
@@ -16,6 +18,9 @@ function makeClient() {
     cache: new InMemoryCache(),
     link: new HttpLink({
       uri: GRAPHQL_ENDPOINT,
+      headers: {
+        "User-Agent": graphqlUserAgent(),
+      },
     }),
   });
 }
