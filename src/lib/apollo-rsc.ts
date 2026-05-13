@@ -58,6 +58,7 @@ function graphqlRscServerHeaders(): Record<string, string> {
   };
   const secret = process.env.GRAPHQL_SERVER_SECRET?.trim();
   if (secret) headers["X-GraphQL-Server-Secret"] = secret;
+  console.log("[Apollo RSC] Headers", headers);
   return headers;
 }
 
