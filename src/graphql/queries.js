@@ -4,7 +4,12 @@ import { gql } from "@apollo/client";
 // Fields live under `nodes` (or `edges.node`), not directly on `posts`.
 export const GET_POSTS = gql`
   query Posts {
-    posts {
+    posts(
+      first: 100
+      where: {
+        orderby: { field: MENU_ORDER, order: ASC }
+      }
+    ) {
       nodes {
         id
         title
@@ -16,7 +21,6 @@ export const GET_POSTS = gql`
     }
   }
 `;
-
 
 export const GET_META_TAGS = gql`
   query MetaTags {
@@ -44,6 +48,7 @@ export const GET_FOOTER_INFO = gql`
       footer {
         facebook
         view360
+        link
       }
     }
   }

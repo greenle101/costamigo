@@ -16,7 +16,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-/** Injected @font-face so Vietnamese glyphs render in Playfair, not generic serif fallback. */
 const playfairDisplay = Playfair_Display({
   subsets: ["latin", "latin-ext", "vietnamese"],
   variable: "--font-playfair-display",
@@ -42,6 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
     const page = data?.page;
     const seo = page?.seo;
+
+    console.log("[RootLayout] GET_META_TAGS data:", page, seo);
 
     const title = cleanMetaValue(seo?.title) ?? page?.title ?? fallbackTitle;
     const description =

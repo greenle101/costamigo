@@ -27,7 +27,7 @@ const FALLBACK_ITEMS: InformationItem[] = [
 
 const fallbackFooterInfo: GetFooterInfoResponse = {
   footerOptions: {
-    footer: { facebook: "", view360: "" },
+    footer: { facebook: "", view360: "", link: "" },
   },
 };
 
@@ -66,11 +66,13 @@ export default async function Homepage() {
 
 function renderHomeData(items: InformationItem[], footerInfo: GetFooterInfoResponse) {
   return (
-    <section className="section-top-information costamigo-page d-flex flex-column flex-grow-1">
-      <div className="wrapper w-100 mx-auto wrapper-inner-padding">
-        <TopInformation items={items} />
-        <Footer footerInfo={footerInfo} />
-      </div>
-    </section>
+    <main className="w-100 d-flex flex-column flex-grow-1" id="home-page">
+      <section className="section-top-information section-common costamigo-page d-flex flex-column flex-grow-1">
+        <div className="wrapper w-100 mx-auto wrapper-inner-padding">
+          <TopInformation items={items} />
+          <Footer footerInfo={footerInfo} />
+        </div>
+      </section>
+    </main>
   );
 }

@@ -6,24 +6,29 @@ interface FooterProps {
   footerInfo: GetFooterInfoResponse;
 }
 
+const DEFAULT_SOCIAL_SITE = "https://costamigo.vn/";
+const DEFAULT_SOCIAL_LABEL = "www.costamigo.vn";
+const DEFAULT_FACEBOOK = "https://www.facebook.com/Costamigo.eras";
+const DEFAULT_VIEW360 = "https://costamigo.vn/360.html";
+
 export default function Footer({ footerInfo }: FooterProps) {
+  const { facebook, view360, link } = footerInfo.footerOptions.footer;
+  const siteHref = (link && link.trim()) || DEFAULT_SOCIAL_SITE;
+  const siteLabel = DEFAULT_SOCIAL_LABEL;
+
   return (
     <footer className="information-social text-center">
-      <a
-        href="https://www.costamigo.erasland.vn/"
-        className="social-link trans"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        www.costamigo.erasland.vn
+      <a href={siteHref} className="social-link trans" target="_blank" rel="noopener noreferrer">
+        {siteLabel}
       </a>
       <div className="social-list">
         <a
-          href={footerInfo.footerOptions.footer.facebook || "#"}
+          href={facebook || DEFAULT_FACEBOOK}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Facebook"
-          className="social-item trans opacity-hover"
+          title="Facebook"
+          className="social-item trans"
         >
           <img
             src="/img/top/facebook_icn_01.svg"
@@ -34,15 +39,16 @@ export default function Footer({ footerInfo }: FooterProps) {
           />
         </a>
         <a
-          href={footerInfo.footerOptions.footer.view360 ?? "#"}
+          href={view360 || DEFAULT_VIEW360}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Cube"
-          className="social-item trans opacity-hover"
+          aria-label="Instagram"
+          title="Instagram"
+          className="social-item trans"
         >
           <img
             src="/img/top/cube_icn_01.svg"
-            alt="Cube"
+            alt="Instagram"
             width={48}
             height={48}
             className="object-common"

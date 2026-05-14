@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -26,26 +26,18 @@ function remSpaceBetweenPx(): number {
   if (typeof document === "undefined") return 12;
   const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
   const mobile = window.matchMedia("(max-width: 767.98px)").matches;
-  return rem * (mobile ? 0.35 : 0.75);
+  /* Match `top.css` horizontal slide feel: desktop 0.75rem, mobile grid column gap 0.4rem */
+  return rem * (mobile ? 0.4 : 0.75);
 }
 
 export default function TopInformation({ items = [] }: TopInformationProps) {
   const uid = useId().replace(/:/g, "");
   const rootId = `information-slider-${uid}`;
 
-  const [mounted, setMounted] = useState(false);
-  /**
-   * Must match SSR: server has no `window`, so we assume desktop until `useEffect` syncs.
-   * Reading `matchMedia` in `useState` breaks hydration on mobile (server HTML uses desktop classes, client first paint used mobile).
-   */
-  const [isMdUp, setIsMdUp] = useState(true);
+  const [isMdUp, setIsMdUp] = useState<boolean | null>(null);
   const [spacePx, setSpacePx] = useState(12);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mq = window.matchMedia(`(min-width: ${MD_MIN_WIDTH_PX}px)`);
     const sync = () => setIsMdUp(mq.matches);
     sync();
@@ -65,7 +57,7 @@ export default function TopInformation({ items = [] }: TopInformationProps) {
     };
   }, []);
 
-  const itemsPerPage = isMdUp ? ITEMS_PER_PAGE_FOUR_COL : ITEMS_PER_PAGE_TWO_COL;
+  const itemsPerPage = isMdUp === false ? ITEMS_PER_PAGE_TWO_COL : ITEMS_PER_PAGE_FOUR_COL;
 
   const pages = useMemo(() => {
     if (!items.length) return [];
@@ -76,33 +68,37 @@ export default function TopInformation({ items = [] }: TopInformationProps) {
     return chunks;
   }, [items, itemsPerPage]);
 
-  const sliderBlockClass = `slider-top-information ${
-    isMdUp ? "slider-information-pc" : "slider-information-sp"
-  }`;
+  const sliderVariant =
+    isMdUp === null ? "" : isMdUp ? "slider-information-pc" : "slider-information-sp";
+  const sliderBlockClass = ["slider-top-information", sliderVariant].filter(Boolean).join(" ");
 
   return (
     <>
       <div className="information-contact">
         <div className="contact-wrapper">
-          <figure className="contact-costamigo mb-0">
-            <img
-              className="image-common img-fluid"
-              src="/img/top/costamigo_logo_01.png"
-              width={294}
-              height={126}
-              alt="COSTAMIGO"
-              loading="eager"
-            />
+          <figure className="contact-costamigo">
+            <a href="https://costamigo.vn/" target="_blank" rel="noopener noreferrer">
+              <img
+                className="image-common img-fluid"
+                src="/img/top/logo-costa.svg"
+                width={180}
+                height={126}
+                alt="COSTAMIGO"
+                loading="eager"
+              />
+            </a>
           </figure>
-          <figure className="contact-erasland mb-0">
-            <img
-              className="image-common img-fluid"
-              src="/img/top/erasland_logo_01.png"
-              width={214}
-              height={43}
-              alt="ERASLAND"
-              loading="eager"
-            />
+          <figure className="contact-erasland">
+            <a href="https://www.erasland.vn/" target="_blank" rel="noopener noreferrer">
+              <img
+                className="image-common img-fluid"
+                src="/img/top/erasland-logo.png"
+                width={260}
+                height={43}
+                alt="ERASLAND"
+                loading="eager"
+              />
+            </a>
           </figure>
         </div>
       </div>
@@ -114,10 +110,11 @@ export default function TopInformation({ items = [] }: TopInformationProps) {
       </div>
 
       <div id={rootId} className={sliderBlockClass}>
-        {!mounted || pages.length === 0 ? (
+        {isMdUp === null || pages.length === 0 ? (
           <div className="swiper js-slider-information" style={{ minHeight: "3rem" }} aria-hidden />
         ) : (
           <Swiper
+            key={`${itemsPerPage}-${pages.length}`}
             className="swiper js-slider-information"
             modules={[Navigation]}
             slidesPerView={1}

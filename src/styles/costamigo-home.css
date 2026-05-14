@@ -1,10 +1,27 @@
 /**
  * Page shell — reference layout uses vw-scaled root `rem`; keep structural spacing predictable.
  */
+#home-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 100dvh;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.costamigo-page.section-top-information {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: 100%;
+  justify-content: center;
+}
+
 .costamigo-page {
   width: 100%;
   max-width: 100%;
-  /* `clip` was cutting off the folder grid; reference html has no horizontal page clip here */
   overflow-x: visible;
   box-sizing: border-box;
 }
@@ -18,11 +35,14 @@
 .costamigo-page > .wrapper {
   flex: 1 1 auto;
   min-height: 0;
+  justify-content: center;
+  align-items: center;
 }
 
-/* After switching `.wrapper` to `justify-content: flex-start` (top.css), keep the footer at the bottom on tall viewports. */
-.section-top-information .wrapper > footer {
-  margin-top: auto;
+@media print, (min-width: 1280px) {
+  .costamigo-page > .wrapper {
+    justify-content: space-around;
+  }
 }
 
 .costamigo-page footer {
@@ -227,7 +247,7 @@
   .title-common-primary .title-label {
     margin-left: 0.62rem;
     font-size: 0.5rem;
-    line-height: 1.2;
+    line-height: 1.5;
   }
 }
 
@@ -245,17 +265,35 @@
   .title-common-primary .title-label {
     margin-top: -0.07rem;
     margin-left: 0.32rem;
-    font-size: 0.35rem;
-    line-height: 1.1428571429;
+    font-size: 0.31rem;
+    line-height: 1.5;
   }
+}
+
+/**
+ * `common.css` puts gradient + `background-clip: text` on `.title-common-primary` with
+ * `-webkit-text-fill-color: transparent` on the h1. The real copy lives in `.title-label`;
+ * in Chromium the clip often maps to the h1’s empty text run, so the heading disappears.
+ * Paint the gradient on the span here instead.
+ */
+.section-top-information .information-heading h1.title-common-primary {
+  margin-top: 0;
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: inherit;
 }
 
 .section-top-information .title-common-primary .title-label {
   margin-left: 0;
-}
-
-.section-top-information .information-heading h1.title-common-primary {
-  margin-top: 0;
+  display: inline-block;
+  background: linear-gradient(97.36deg, #c76400 8.99%, #2b3580 51%, #0084ae 91.42%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--font-playfair-display, "Playfair Display"), serif;
+  text-transform: uppercase;
 }
 
 .section-top-information .information-social > a.social-link {

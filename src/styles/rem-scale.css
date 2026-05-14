@@ -9,13 +9,14 @@ html {
 @media print, (min-width: 768px) {
   html {
     overflow: auto scroll;
-    font-size: 5.2083333333vw;
+    /* Cap vw so ultra-wide monitors match ~1920 layout; uncapped vw made rem huge and the hero taller than 100vh */
+    font-size: min(5.2083333333vw, 100px);
   }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1100.98px) {
   html {
-    font-size: 6.4935064935vw;
+    font-size: min(6.4935064935vw, 72px);
   }
 }
 
