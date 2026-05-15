@@ -49,6 +49,7 @@ export const GET_FOOTER_INFO = gql`
         facebook
         view360
         link
+        linkText
       }
     }
   }
