@@ -39,7 +39,6 @@ export default async function Homepage() {
 
   let footerInfo: GetFooterInfoResponse = fallbackFooterInfo;
   if (footerResult.status === "fulfilled" && footerResult.value.data) {
-    console.log("[Homepage] GET_FOOTER_INFO data:", footerResult.value.data);
     footerInfo = footerResult.value.data;
   } else if (footerResult.status === "rejected") {
     console.error("[Homepage] GET_FOOTER_INFO failed:", footerResult.reason);
@@ -48,7 +47,6 @@ export default async function Homepage() {
   let items: InformationItem[] = FALLBACK_ITEMS;
   if (postsResult.status === "fulfilled") {
     const data = postsResult.value.data;
-    console.log("[Homepage] GET_POSTS data:", data);
     const posts = data?.posts?.nodes ?? [];
     const mapped: InformationItem[] = posts.map((post: Post) => ({
       id: post.id,

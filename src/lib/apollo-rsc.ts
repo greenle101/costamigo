@@ -7,11 +7,6 @@ const GRAPHQL_ENDPOINT =
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT?.trim() ||
   "https://dashboard.costamigo.vn/graphql";
 
-/**
- * `GRAPHQL_RSC_FETCH_CACHE`: `no-store` | `force-cache` | `revalidate`
- * When `revalidate`, set `GRAPHQL_RSC_REVALIDATE_SECONDS` (default 60).
- * Unknown values fall back to `no-store`.
- */
 function graphqlRscFetchOptions(): RequestInit {
   const mode = (
     process.env.GRAPHQL_RSC_FETCH_CACHE ?? "no-store"
@@ -37,12 +32,6 @@ function graphqlRscFetchOptions(): RequestInit {
   return { cache: "no-store" };
 }
 
-/**
- * Tadu WAF (or similar): bypass by header instead of IP allowlist.
- * Set both `TADU_WAF_BYPASS_HEADER` and `TADU_WAF_BYPASS_SECRET` (server-only,
- * never `NEXT_PUBLIC_`). If either is missing, no bypass header is sent.
- * Browser Apollo cannot safely send this; use RSC or a Route Handler proxy.
- */
 function taduwafBypassHeaders(): Record<string, string> {
   const name = process.env.TADU_WAF_BYPASS_HEADER?.trim();
   const value = process.env.TADU_WAF_BYPASS_SECRET?.trim();
@@ -58,22 +47,12 @@ function graphqlRscServerHeaders(): Record<string, string> {
   };
   const secret = process.env.GRAPHQL_SERVER_SECRET?.trim();
   if (secret) headers["X-GraphQL-Server-Secret"] = secret;
-  console.log("[Apollo RSC] Headers", headers);
   return headers;
 }
 
 export const { getClient } = registerApolloClient(() => {
   const wafHeader = process.env.TADU_WAF_BYPASS_HEADER?.trim();
   const wafSecret = process.env.TADU_WAF_BYPASS_SECRET?.trim();
-  console.log("[Apollo RSC]", !!process.env.GRAPHQL_RSC_FETCH_CACHE);
-  console.log("[Apollo RSC] Tadu WAF bypass", {
-    active: Boolean(wafHeader && wafSecret),
-    header: wafHeader ?? null,
-    secretSet: Boolean(wafSecret),
-  });
-  if (process.env.DEBUG_LOG_TADU_WAF_SECRET === "1") {
-    console.log("[Apollo RSC] TADU_WAF_BYPASS_SECRET (debug)", wafSecret);
-  }
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({

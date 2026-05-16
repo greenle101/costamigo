@@ -42,8 +42,6 @@ export async function generateMetadata(): Promise<Metadata> {
     const page = data?.page;
     const seo = page?.seo;
 
-    console.log("[RootLayout] GET_META_TAGS data:", page, seo);
-
     const title = cleanMetaValue(seo?.title) ?? page?.title ?? fallbackTitle;
     const description =
       cleanMetaValue(seo?.metaDesc) ??
