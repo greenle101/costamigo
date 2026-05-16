@@ -39,7 +39,6 @@ function taduwafBypassHeaders(): Record<string, string> {
   return { [name]: value };
 }
 
-/** Sent only from this server bundle (never use `NEXT_PUBLIC_` for secrets). */
 function graphqlRscServerHeaders(): Record<string, string> {
   const headers: Record<string, string> = {
     "User-Agent": graphqlUserAgent(),
